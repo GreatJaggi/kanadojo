@@ -1,7 +1,8 @@
-import { COLORS } from "../styles/theme";
-import { Chip, ProgressBar } from "./ui";
+import { useState } from "react";
+import { COLORS, levelColor } from "../styles/theme";
+import { Chip, ProgressBar, LegendDot } from "./ui";
 
-export function Home({ settings, updateSettings, deckStatsByScript, dueCount, startSession, reopenIntro, startDrill, drillStats }) {
+export function Home({ settings, updateSettings, deckStatsByScript, groupStatsByScript, dueCount, startSession, reopenIntro, startDrill, drillStats }) {
   const toggleScript = (script) => {
     const has = settings.scripts.includes(script);
     let next = has ? settings.scripts.filter(s => s !== script) : [...settings.scripts, script];
@@ -72,6 +73,8 @@ export function Home({ settings, updateSettings, deckStatsByScript, dueCount, st
         )}
       </div>
 
+      <GroupMastery groupStatsByScript={groupStatsByScript} />
+
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
         {["hiragana", "katakana"].map(script => {
           const s = deckStatsByScript[script];
@@ -120,6 +123,82 @@ export function Home({ settings, updateSettings, deckStatsByScript, dueCount, st
         <span onClick={reopenIntro} style={{ color: COLORS.indigo, textDecoration: "underline", cursor: "pointer" }}>
           Re-read how the buttons work.
         </span>
+      </div>
+    </div>
+  );
+}
+
+function GroupMastery({ groupStatsByScript }) {
+  const [script, setScript] = useState("hiragana");
+  const [openRow, setOpenRow] = useState(null);
+  const groups = groupStatsByScript[script];
+  const accent = script === "hiragana" ? COLORS.indigo : COLORS.vermillion;
+
+  return (
+    <div style={{
+      background: "rgba(255,255,255,0.55)", border: `1px solid ${COLORS.line}`,
+      borderRadius: 18, padding: 24,
+    }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, flexWrap: "wrap", gap: 10 }}>
+        <span style={{ fontFamily: "'Shippori Mincho B1', serif", fontWeight: 700, fontSize: 18 }}>Mastery by group</span>
+        <div style={{ display: "flex", gap: 8 }}>
+          {["hiragana", "katakana"].map(s => (
+            <Chip key={s} active={script === s} onClick={() => { setScript(s); setOpenRow(null); }}>{s}</Chip>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        {groups.map(group => {
+          const isOpen = openRow === group.label;
+          return (
+            <div key={group.label} style={{ border: `1px solid ${COLORS.line}`, borderRadius: 10, overflow: "hidden" }}>
+              <button
+                onClick={() => setOpenRow(isOpen ? null : group.label)}
+                style={{
+                  display: "flex", alignItems: "center", gap: 14, width: "100%", padding: "10px 14px",
+                  background: "none", border: "none", cursor: "pointer", textAlign: "left",
+                }}
+              >
+                <span style={{
+                  fontSize: 10, color: COLORS.inkSoft, flexShrink: 0,
+                  transform: isOpen ? "rotate(90deg)" : "none", transition: "transform 0.15s ease",
+                }}>▸</span>
+                <span style={{ fontFamily: "'Shippori Mincho B1', serif", fontWeight: 700, fontSize: 14, width: 56, flexShrink: 0 }}>
+                  {group.label}
+                </span>
+                <div style={{ flex: 1 }}>
+                  <ProgressBar percent={group.pct} color={accent} />
+                </div>
+                <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: COLORS.inkSoft, width: 36, textAlign: "right", flexShrink: 0 }}>
+                  {group.pct}%
+                </span>
+              </button>
+              {isOpen && (
+                <div style={{ display: "grid", gridTemplateColumns: `repeat(${group.cells.length}, 1fr)`, gap: 8, padding: "0 14px 14px" }}>
+                  {group.cells.map(cell => (
+                    <div key={cell.c} style={{
+                      aspectRatio: "1", borderRadius: 8, border: `2px solid ${levelColor(cell.level)}`,
+                      display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 2,
+                      background: "rgba(255,255,255,0.5)",
+                    }}>
+                      <span style={{ fontFamily: "'Noto Sans JP', sans-serif", fontSize: 18 }}>{cell.c}</span>
+                      <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: COLORS.inkSoft }}>{cell.r}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      <div style={{ marginTop: 16, display: "flex", gap: 14, flexWrap: "wrap" }}>
+        <LegendDot color={levelColor(undefined)} label="Not started" />
+        <LegendDot color={levelColor(0)} label="New" />
+        <LegendDot color={levelColor(2)} label="Learning" />
+        <LegendDot color={levelColor(4)} label="Strong" />
+        <LegendDot color={levelColor(5)} label="Mastered" />
       </div>
     </div>
   );

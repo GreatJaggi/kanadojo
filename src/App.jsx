@@ -70,6 +70,26 @@ export default function KanaDojo() {
     return out;
   }, [progress, settings.voiced]);
 
+  const groupStatsByScript = useMemo(() => {
+    const out = {};
+    ["hiragana", "katakana"].forEach(script => {
+      const groups = [];
+      const byRow = new Map();
+      DECKS[script].seion.forEach(card => {
+        if (!byRow.has(card.row)) { byRow.set(card.row, []); groups.push(card.row); }
+        byRow.get(card.row).push(card);
+      });
+      out[script] = groups.map(label => {
+        const cells = byRow.get(label).map(card => ({ c: card.c, r: card.r, level: progress[cardId(card)]?.level }));
+        const pct = Math.round(
+          (cells.reduce((sum, cell) => sum + Math.min(cell.level ?? 0, MASTER_LEVEL), 0) / (cells.length * MASTER_LEVEL)) * 100
+        );
+        return { label, pct, cells };
+      });
+    });
+    return out;
+  }, [progress]);
+
   const dueCount = useMemo(() => {
     const now = Date.now();
     let due = 0, fresh = 0;
@@ -346,7 +366,7 @@ export default function KanaDojo() {
         {view === "home" && (
           <Home
             settings={settings} updateSettings={updateSettings}
-            deckStatsByScript={deckStatsByScript} dueCount={dueCount}
+            deckStatsByScript={deckStatsByScript} groupStatsByScript={groupStatsByScript} dueCount={dueCount}
             startSession={startSession} setView={setView}
             reopenIntro={() => setShowIntro(true)}
             startDrill={startDrill}

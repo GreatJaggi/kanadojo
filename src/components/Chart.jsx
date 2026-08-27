@@ -2,7 +2,7 @@ import { useState } from "react";
 import { COLORS, levelColor } from "../styles/theme";
 import { HIRAGANA_ROWS } from "../data/hiragana";
 import { KATAKANA_ROWS } from "../data/katakana";
-import { Chip } from "./ui";
+import { Chip, LegendDot } from "./ui";
 
 export function Chart({ settings, progress, startSession }) {
   const [script, setScript] = useState(settings.scripts[0] || "hiragana");
@@ -61,15 +61,6 @@ export function Chart({ settings, progress, startSession }) {
         <LegendDot color={levelColor(4)} label="Strong" />
         <LegendDot color={levelColor(5)} label="Mastered" />
       </div>
-    </div>
-  );
-}
-
-function LegendDot({ color, label }) {
-  return (
-    <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-      <div style={{ width: 10, height: 10, borderRadius: 3, border: `2px solid ${color}` }} />
-      {label}
     </div>
   );
 }

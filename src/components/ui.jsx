@@ -37,6 +37,15 @@ export function ProgressBar({ percent, color }) {
   );
 }
 
+export function LegendDot({ color, label }) {
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 6, fontFamily: "'Work Sans', sans-serif", fontSize: 12, color: COLORS.inkSoft }}>
+      <div style={{ width: 10, height: 10, borderRadius: 3, border: `2px solid ${color}` }} />
+      {label}
+    </div>
+  );
+}
+
 export function Stamp({ show }) {
   return (
     <div style={{

@@ -35,7 +35,7 @@ export function Chart({ settings, progress, startSession }) {
                       {cell.e && (
                         <span style={{ position: "absolute", top: 2, right: 3, fontSize: 10, opacity: 0.75 }}>{cell.e}</span>
                       )}
-                      <div className="kd-chart-cell-char" style={{ fontFamily: "'Shippori Mincho B1', serif", fontSize: 24 }}>{cell.c}</div>
+                      <div className="kd-chart-cell-char" style={{ fontFamily: "'Noto Sans JP', sans-serif", fontSize: 24 }}>{cell.c}</div>
                       <div className="kd-chart-cell-romaji" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: COLORS.inkSoft }}>{cell.r}</div>
                     </div>
                   );

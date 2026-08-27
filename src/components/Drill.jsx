@@ -52,7 +52,7 @@ export function Drill({ drill, drillAnswer, endDrill, revealDrill, setView }) {
         }}
       >
         <div style={{
-          fontFamily: dir === "kana" ? "'Shippori Mincho B1', serif" : "'Work Sans', sans-serif",
+          fontFamily: dir === "kana" ? "'Noto Sans JP', sans-serif" : "'Work Sans', sans-serif",
           fontWeight: dir === "kana" ? 400 : 700,
           fontSize: dir === "kana" ? 100 : 44,
           color: COLORS.ink,

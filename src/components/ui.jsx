@@ -46,7 +46,7 @@ export function Stamp({ show }) {
       borderRadius: "50%",
       border: `3px solid ${COLORS.vermillion}`,
       color: COLORS.vermillion,
-      fontFamily: "'Shippori Mincho B1', serif",
+      fontFamily: "'Noto Sans JP', sans-serif",
       fontWeight: 800,
       fontSize: 22,
       background: "rgba(242,236,221,0.9)",

@@ -49,7 +49,7 @@ export function Study({ session, setSession, grade, setView, progress, undoLastG
             <div key={i} style={{ position: "absolute", top, left, width: 10, height: 10, borderTop: i<2?`1px solid ${COLORS.inkSoft}`:"none", borderBottom: i>=2?`1px solid ${COLORS.inkSoft}`:"none", borderLeft: i%2===0?`1px solid ${COLORS.inkSoft}`:"none", borderRight: i%2===1?`1px solid ${COLORS.inkSoft}`:"none" }} />
           ))}
           <div style={{
-            fontFamily: dir === "kana" ? "'Shippori Mincho B1', serif" : "'Work Sans', sans-serif",
+            fontFamily: dir === "kana" ? "'Noto Sans JP', sans-serif" : "'Work Sans', sans-serif",
             fontWeight: dir === "kana" ? 400 : 700,
             fontSize: dir === "kana" ? 108 : 48,
             color: COLORS.ink,
@@ -126,7 +126,7 @@ export function Study({ session, setSession, grade, setView, progress, undoLastG
               }}>
                 <span style={{ fontSize: 17 }}>{card.e}</span>
                 <span>
-                  <span style={{ fontFamily: "'Shippori Mincho B1', serif", fontSize: 15 }}>{card.w}</span>
+                  <span style={{ fontFamily: "'Noto Sans JP', sans-serif", fontSize: 15 }}>{card.w}</span>
                   {" "}starts with this sound
                 </span>
               </div>

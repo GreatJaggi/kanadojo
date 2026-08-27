@@ -64,7 +64,7 @@ export function Stats({ stats, progress, deckStatsByScript, fullDeck, onReset })
                     <div key={m.id} style={{
                       width: 34, height: 34, borderRadius: 8, border: `2px solid ${COLORS.vermillion}`,
                       display: "flex", alignItems: "center", justifyContent: "center",
-                      fontFamily: "'Shippori Mincho B1', serif", fontSize: 17, background: "rgba(255,255,255,0.5)",
+                      fontFamily: "'Noto Sans JP', sans-serif", fontSize: 17, background: "rgba(255,255,255,0.5)",
                     }}>
                       {m.char}
                     </div>
@@ -87,7 +87,7 @@ export function Stats({ stats, progress, deckStatsByScript, fullDeck, onReset })
                 border: `1px solid ${COLORS.line}`, borderRadius: 10, padding: "8px 12px",
                 display: "flex", alignItems: "center", gap: 8,
               }}>
-                <span style={{ fontFamily: "'Shippori Mincho B1', serif", fontSize: 20 }}>{t.id.split(":")[1]}</span>
+                <span style={{ fontFamily: "'Noto Sans JP', sans-serif", fontSize: 20 }}>{t.id.split(":")[1]}</span>
                 <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: COLORS.vermillion }}>{t.incorrect}×</span>
               </div>
             ))}

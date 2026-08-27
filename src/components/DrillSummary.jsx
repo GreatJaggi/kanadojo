@@ -36,13 +36,13 @@ export function DrillSummary({ drill, startDrill, setView, drillStats }) {
           fontFamily: "'Work Sans', sans-serif", fontSize: 12, color: COLORS.gold, textAlign: "center", maxWidth: 320,
           border: `1px dashed ${COLORS.gold}`, borderRadius: 10, padding: "8px 12px",
         }}>
-          {drill.flagged} character{drill.flagged > 1 ? "s" : ""} you'd already marked mastered slipped here \u2014
-          rescheduled for an earlier check in Practice instead of waiting out the full interval.
+          {drill.flagged} character{drill.flagged > 1 ? "s" : ""} you'd already marked mastered slipped here{" "}
+          — rescheduled for an earlier check in Practice instead of waiting out the full interval.
         </div>
       )}
       <div style={{ fontFamily: "'Work Sans', sans-serif", fontSize: 12, color: COLORS.inkSoft, textAlign: "center", maxWidth: 320 }}>
         Your speed/accuracy records are tracked and saved here, separately from the mastery tracker and
-        your daily practice streak \u2014 drilling won't inflate either of those.
+        your daily practice streak — drilling won't inflate either of those.
       </div>
       <div style={{ display: "flex", gap: 10 }}>
         <button onClick={() => setView("home")} style={{
@@ -52,7 +52,7 @@ export function DrillSummary({ drill, startDrill, setView, drillStats }) {
         }}>
           Back home
         </button>
-        <button onClick={startDrill} style={{
+        <button onClick={() => startDrill(drill.pool)} style={{
           padding: "12px 22px", borderRadius: 12, border: "none",
           background: COLORS.gold, color: COLORS.washi, fontFamily: "'Work Sans', sans-serif",
           fontWeight: 700, fontSize: 14, cursor: "pointer",

@@ -249,23 +249,27 @@ export default function KanaDojo() {
   // ---- Drill mode: unlimited rapid-fire reps for in-session fluency. Deliberately does NOT
   // touch per-character SRS levels or nextReview dates — it's for speed/accuracy right now,
   // not long-term retention tracking. Only feeds the daily streak + total-reviews counters. ----
-  const pickDrillCard = useCallback(() => {
-    if (!fullDeck.length) return null;
+  const pickDrillCard = useCallback((candidatePool) => {
     // Drill is meant to test recognition speed on characters already introduced via Practice,
-    // not to introduce brand-new ones — so it draws from the "known" pool when one exists.
-    const known = fullDeck.filter(c => progress[cardId(c)]);
-    const pool = known.length > 0 ? known : fullDeck;
+    // not to introduce brand-new ones — so it draws from the "known" subset of the candidate pool
+    // (the full deck by default, or a group-scoped selection when one was passed in), falling back
+    // to the whole candidate pool only if nothing in it has been started yet.
+    const base = candidatePool && candidatePool.length ? candidatePool : fullDeck;
+    if (!base.length) return null;
+    const known = base.filter(c => progress[cardId(c)]);
+    const pool = known.length > 0 ? known : base;
     const card = pool[Math.floor(Math.random() * pool.length)];
     const dir = settings.direction === "mixed" ? (Math.random() < 0.5 ? "kana" : "romaji") : settings.direction;
     return { card, dir };
   }, [fullDeck, settings.direction, progress]);
 
-  const startDrill = useCallback(() => {
-    const picked = pickDrillCard();
+  const startDrill = useCallback((pool) => {
+    const picked = pickDrillCard(pool);
     if (!picked) return;
     setDrill({
       card: picked.card, dir: picked.dir, revealed: false,
       attempts: 0, correct: 0, streak: 0, bestStreak: 0, startTime: Date.now(), flagged: 0,
+      pool: pool && pool.length ? pool : null,
     });
     setView("drill");
   }, [pickDrillCard]);
@@ -292,7 +296,7 @@ export default function KanaDojo() {
       const correct = prev.correct + (isCorrect ? 1 : 0);
       const streak = isCorrect ? prev.streak + 1 : 0;
       const bestStreak = Math.max(prev.bestStreak, streak);
-      const picked = pickDrillCard();
+      const picked = pickDrillCard(prev.pool);
       return {
         ...prev, attempts, correct, streak, bestStreak, flagged,
         card: picked ? picked.card : prev.card,

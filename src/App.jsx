@@ -80,11 +80,12 @@ export default function KanaDojo() {
         byRow.get(card.row).push(card);
       });
       out[script] = groups.map(label => {
-        const cells = byRow.get(label).map(card => ({ c: card.c, r: card.r, level: progress[cardId(card)]?.level }));
+        const cards = byRow.get(label);
+        const cells = cards.map(card => ({ c: card.c, r: card.r, level: progress[cardId(card)]?.level }));
         const pct = Math.round(
           (cells.reduce((sum, cell) => sum + Math.min(cell.level ?? 0, MASTER_LEVEL), 0) / (cells.length * MASTER_LEVEL)) * 100
         );
-        return { label, pct, cells };
+        return { label, pct, cells, cards };
       });
     });
     return out;
@@ -134,7 +135,11 @@ export default function KanaDojo() {
     });
     due.sort((a, b) => (progress[cardId(a)].nextReview) - (progress[cardId(b)].nextReview));
     let queue = due.slice(0, limit);
-    if (queue.length < limit) queue = queue.concat(shuffle(fresh).slice(0, limit - queue.length));
+    // `fresh` is already in gojūon row order (a-row, k-row, s-row...) because it's built by filtering
+    // `cards`, which preserves DECKS' row order — so new characters are introduced in the conventional
+    // teaching order instead of scattered randomly across the whole script. The final shuffle() below
+    // still randomizes on-screen presentation order within a session.
+    if (queue.length < limit) queue = queue.concat(fresh.slice(0, limit - queue.length));
     if (queue.length === 0) {
       // nothing due, nothing new — offer a light review of the shakiest cards
       const ranked = [...cards].sort((a, b) => (progress[cardId(a)]?.level ?? 0) - (progress[cardId(b)]?.level ?? 0));

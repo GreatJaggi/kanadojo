@@ -73,7 +73,7 @@ export function Home({ settings, updateSettings, deckStatsByScript, groupStatsBy
         )}
       </div>
 
-      <GroupMastery groupStatsByScript={groupStatsByScript} />
+      <GroupMastery groupStatsByScript={groupStatsByScript} startSession={startSession} />
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
         {["hiragana", "katakana"].map(script => {
@@ -128,7 +128,7 @@ export function Home({ settings, updateSettings, deckStatsByScript, groupStatsBy
   );
 }
 
-function GroupMastery({ groupStatsByScript }) {
+function GroupMastery({ groupStatsByScript, startSession }) {
   const [script, setScript] = useState("hiragana");
   const [openRow, setOpenRow] = useState(null);
   const groups = groupStatsByScript[script];
@@ -175,17 +175,29 @@ function GroupMastery({ groupStatsByScript }) {
                 </span>
               </button>
               {isOpen && (
-                <div style={{ display: "grid", gridTemplateColumns: `repeat(${group.cells.length}, 1fr)`, gap: 8, padding: "0 14px 14px" }}>
-                  {group.cells.map(cell => (
-                    <div key={cell.c} style={{
-                      aspectRatio: "1", borderRadius: 8, border: `2px solid ${levelColor(cell.level)}`,
-                      display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 2,
-                      background: "rgba(255,255,255,0.5)",
-                    }}>
-                      <span style={{ fontFamily: "'Noto Sans JP', sans-serif", fontSize: 18 }}>{cell.c}</span>
-                      <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: COLORS.inkSoft }}>{cell.r}</span>
-                    </div>
-                  ))}
+                <div style={{ padding: "0 14px 14px", display: "flex", flexDirection: "column", gap: 10 }}>
+                  <div style={{ display: "grid", gridTemplateColumns: `repeat(${group.cells.length}, 1fr)`, gap: 8 }}>
+                    {group.cells.map(cell => (
+                      <div key={cell.c} style={{
+                        aspectRatio: "1", borderRadius: 8, border: `2px solid ${levelColor(cell.level)}`,
+                        display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 2,
+                        background: "rgba(255,255,255,0.5)",
+                      }}>
+                        <span style={{ fontFamily: "'Noto Sans JP', sans-serif", fontSize: 18 }}>{cell.c}</span>
+                        <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: COLORS.inkSoft }}>{cell.r}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <button
+                    onClick={() => startSession("row", group.cards)}
+                    style={{
+                      alignSelf: "flex-start", border: `1px solid ${accent}`, background: "transparent",
+                      color: accent, borderRadius: 8, padding: "6px 12px", fontSize: 12, fontWeight: 600,
+                      fontFamily: "'Work Sans', sans-serif", cursor: "pointer",
+                    }}
+                  >
+                    Practice this group →
+                  </button>
                 </div>
               )}
             </div>

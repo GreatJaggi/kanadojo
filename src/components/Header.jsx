@@ -11,7 +11,7 @@ export function Header({ stats, view, setView }) {
           onClick={() => setView("home")}
           style={{ fontFamily: "'Shippori Mincho B1', serif", fontWeight: 800, fontSize: 34, cursor: "pointer", color: COLORS.indigoDeep, lineHeight: 1.1 }}
         >
-          Kana Dojo
+          Kanaflow
         </div>
       </div>
       <div style={{ display: "flex", gap: 8, alignItems: "center" }}>

@@ -1,4 +1,4 @@
-# Kana Dojo
+# Kanaflow
 
 A spaced-repetition trainer for hiragana and katakana — Practice mode for
 building long-term mastery, Speed Drill for fluency and speed, plus a full

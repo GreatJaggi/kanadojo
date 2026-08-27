@@ -1,4 +1,9 @@
-# Kana Dojo — project context
+# Kanaflow — project context
+
+(Renamed from "Kana Dojo" — that name was already taken elsewhere. The
+`kanadojo:*` localStorage key prefix in `lib/storage.js` was deliberately left
+unchanged during the rename, since renaming it would silently drop anyone's
+existing saved progress on next load.)
 
 A spaced-repetition trainer for hiragana and katakana, built as a React + Vite
 single-page app. This file exists so Claude Code has the architecture and

@@ -13,7 +13,7 @@ import { DrillSummary } from "./components/DrillSummary";
 import { Chart } from "./components/Chart";
 import { Stats } from "./components/Stats";
 
-export default function KanaDojo() {
+export default function Kanaflow() {
   const [loaded, setLoaded] = useState(false);
   const [progress, setProgress] = useState({});
   const [stats, setStats] = useState({ streakDays: 0, lastStudyDate: null, totalReviews: 0 });
